@@ -1,0 +1,45 @@
+# LoveDA dataset config for SAM3 remote sensing fine-tuning
+# Directory layout expected after conversion:
+# LoveDA-Instance/
+# ├── images/
+# │   ├── train/*.png
+# │   └── val/*.png
+# └── labels/
+#     ├── train/*.txt
+#     └── val/*.txt
+
+path: /path/to/LoveDA-Instance
+train: images/train
+val: images/val
+
+# LoveDA class mapping (background removed)
+# source semantic ids: 0=background, 1=building, 2=road, 3=water, 4=barren, 5=forest, 6=agriculture
+names:
+  0: building
+  1: road
+  2: water
+  3: barren
+  4: forest
+  5: agriculture
+
+meta:
+  ignore_index: 255
+  background_id: 0
+  semantic_to_yolo:
+    1: 0
+    2: 1
+    3: 2
+    4: 3
+    5: 4
+    6: 5
+  # class selection examples for train_sam3_loveda.py
+  class_selection_examples:
+    forest_only:
+      class_names: [forest]
+      semantic_ids: [5]
+    forest_water_building:
+      class_names: [forest, water, building]
+      semantic_ids: [5, 3, 1]
+    all_classes:
+      class_names: [building, road, water, barren, forest, agriculture]
+      semantic_ids: [1, 2, 3, 4, 5, 6]
